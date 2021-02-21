@@ -25,4 +25,6 @@ Route::resource('invoices', App\Http\Controllers\InvoiceController::class);
 
 Route::resource('sections',App\Http\Controllers\SectionController::class);
 
+Route::resource('products',App\Http\Controllers\ProductController::class);
+
 Route::get('/{page}', [App\Http\Controllers\AdminController::class, 'index']);

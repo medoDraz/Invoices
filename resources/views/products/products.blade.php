@@ -2,14 +2,21 @@
 
 @section('css')
     <!-- Internal Data table css -->
-    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"/>
+    <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" />
     <link href="{{ URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css') }}" rel="stylesheet">
     <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ URL::asset('assets/plugins/prism/prism.css') }}" rel="stylesheet">
+    <!---Internal Owl Carousel css-->
+    <link href="{{ URL::asset('assets/plugins/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+    <!---Internal  Multislider css-->
+    <link href="{{ URL::asset('assets/plugins/multislider/multislider.css') }}" rel="stylesheet">
+    <!--- Select2 css -->
+    <link href="{{ URL::asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
 @section('title')
-    الاقسام
+    المنتجات
 @stop
 
 @endsection
@@ -19,7 +26,7 @@
         <div class="my-auto">
             <div class="d-flex">
                 <h4 class="content-title mb-0 my-auto">الاعدادات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/
-                الاقسام</span>
+                المنتجات</span>
             </div>
         </div>
     </div>
@@ -74,11 +81,11 @@
                     <div class="d-flex justify-content-between">
                     <!-- @can('اضافة قسم') -->
                         <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale"
-                           data-toggle="modal" href="#modaldemo8">اضافة قسم</a>
+                           data-toggle="modal" href="#modaldemo8">اضافة منتج</a>
                     <!-- @endcan -->
                     </div>
                     <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale"
-                       data-toggle="modal" href="#modaldemo8" style="width: 105px;">اضافة قسم</a>
+                       data-toggle="modal" href="#modaldemo8" style="width: 105px;">اضافة منتج</a>
 
                 </div>
                 <div class="card-body">
@@ -88,6 +95,7 @@
                             <thead>
                             <tr>
                                 <th class="border-bottom-0">#</th>
+                                <th class="border-bottom-0">اسم المنتج</th>
                                 <th class="border-bottom-0">اسم القسم</th>
                                 <th class="border-bottom-0">الوصف</th>
                                 <th class="border-bottom-0">العمليات</th>
@@ -95,11 +103,12 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($sections as $index => $x)
+                            @foreach ($products as $index => $x)
 
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $x->section_name }}</td>
+                                    <td>{{ $x->product_name }}</td>
+                                    <td>{{ $x->section->section_name }}</td>
                                     <td>{{ $x->description }}</td>
                                     <td>
 {{--                                        @can('تعديل قسم')--}}
@@ -118,12 +127,12 @@
                                     </td>
                                 </tr>
                                 <!-- edit -->
-                                <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                <div class="modal fade" id="edit_Product" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                                      aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">تعديل القسم</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel">تعديل المنتج</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -135,7 +144,7 @@
                                                     {{ csrf_field() }}
                                                     <div class="form-group">
                                                         <input type="hidden" name="id" id="id" value="">
-                                                        <label for="recipient-name" class="col-form-label">اسم القسم:</label>
+                                                        <label for="recipient-name" class="col-form-label">اسم المنتج:</label>
                                                         <input class="form-control" name="section_name" id="section_name" type="text">
                                                     </div>
                                                     <div class="form-group">
@@ -159,7 +168,7 @@
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content modal-content-demo">
                                             <div class="modal-header">
-                                                <h6 class="modal-title">حذف القسم</h6>
+                                                <h6 class="modal-title">حذف المنتج</h6>
                                                 <button aria-label="Close" class="close" data-dismiss="modal"
                                                         type="button"><span aria-hidden="true">&times;</span></button>
                                             </div>
@@ -199,13 +208,21 @@
                                 type="button"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('sections.store') }}" method="post">
+                        <form action="{{ route('products.store') }}" method="post">
                             {{ csrf_field() }}
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1">اسم القسم</label>
-                                <input type="text" class="form-control" id="section_name" name="section_name">
+                                <label for="exampleInputEmail1">اسم المنتج</label>
+                                <input type="text" class="form-control" id="product_name" name="product_name">
                             </div>
+
+                            <label class="my-1 mr-2" for="inlineFormCustomSelectPref">القسم</label>
+                            <select name="section_id" id="section_id" class="form-control" required>
+                                <option value="" selected disabled> --حدد القسم--</option>
+                                @foreach ($sections as $section)
+                                    <option value="{{ $section->id }}">{{ $section->section_name }}</option>
+                                @endforeach
+                            </select>
 
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">ملاحظات</label>
@@ -252,29 +269,35 @@
     <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+    <!-- Internal Prism js-->
+    <script src="{{ URL::asset('assets/plugins/prism/prism.js') }}"></script>
+    <!--Internal  Datepicker js -->
+    <script src="{{ URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js') }}"></script>
+    <!-- Internal Select2 js-->
+    <script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+    <!-- Internal Modal js-->
     <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
 
     <script>
-        $('#exampleModal2').on('show.bs.modal', function (event) {
+        $('#edit_Product').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
-            var id = button.data('id')
+            var Product_name = button.data('name')
             var section_name = button.data('section_name')
+            var pro_id = button.data('pro_id')
             var description = button.data('description')
             var modal = $(this)
-            modal.find('.modal-body #id').val(id);
+            modal.find('.modal-body #Product_name').val(Product_name);
             modal.find('.modal-body #section_name').val(section_name);
             modal.find('.modal-body #description').val(description);
+            modal.find('.modal-body #pro_id').val(pro_id);
         })
-    </script>
-
-    <script>
-        $('#modaldemo9').on('show.bs.modal', function (event) {
+        $('#modaldemo9').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
-            var id = button.data('id')
-            var section_name = button.data('section_name')
+            var pro_id = button.data('pro_id')
+            var product_name = button.data('product_name')
             var modal = $(this)
-            modal.find('.modal-body #id').val(id);
-            modal.find('.modal-body #section_name').val(section_name);
+            modal.find('.modal-body #pro_id').val(pro_id);
+            modal.find('.modal-body #product_name').val(product_name);
         })
     </script>
 
