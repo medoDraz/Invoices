@@ -62,7 +62,7 @@
             </button>
         </div>
     @endif
-
+ 
     @if (session()->has('edit'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong style="margin-right: 30px;">{{ session()->get('edit') }}</strong>
@@ -103,24 +103,25 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($products as $index => $x)
+                            @foreach ($products as $index => $product)
 
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $x->product_name }}</td>
-                                    <td>{{ $x->section->section_name }}</td>
-                                    <td>{{ $x->description }}</td>
+                                    <td>{{ $product->product_name }}</td>
+                                    <td>{{ $product->section->section_name }}</td>
+                                    <td>{{ $product->description }}</td>
                                     <td>
 {{--                                        @can('تعديل قسم')--}}
                                             <a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
-                                               data-id="{{ $x->id }}" data-section_name="{{ $x->section_name }}"
-                                               data-description="{{ $x->description }}" data-toggle="modal"
-                                               href="#exampleModal2" title="تعديل"><i class="las la-pen"></i></a>
+                                               data-id="{{ $product->id }}" data-product_name="{{ $product->product_name }}"
+                                               data-description="{{ $product->description }}"
+                                               data-section_name="{{ $product->section->section_name }}" data-toggle="modal"
+                                               href="#edit_Product" title="تعديل"><i class="las la-pen"></i></a>
 {{--                                        @endcan--}}
 
 {{--                                        @can('حذف قسم')--}}
                                             <a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
-                                               data-id="{{ $x->id }}" data-section_name="{{ $x->section_name }}"
+                                               data-id="{{ $product->id }}" data-product_name="{{ $product->product_name }}"
                                                data-toggle="modal" href="#modaldemo9" title="حذف"><i
                                                     class="las la-trash"></i></a>
 {{--                                        @endcan--}}
@@ -139,14 +140,20 @@
                                             </div>
                                             <div class="modal-body">
 
-                                                <form action="{{ route('sections.update',$x) }}" method="post" autocomplete="off">
+                                                <form action="{{ route('products.update',$product) }}" method="post" autocomplete="off">
                                                     {{ method_field('patch') }}
                                                     {{ csrf_field() }}
                                                     <div class="form-group">
-                                                        <input type="hidden" name="id" id="id" value="">
+                                                        <input type="hidden" name="id" id="pro_id" value="">
                                                         <label for="recipient-name" class="col-form-label">اسم المنتج:</label>
-                                                        <input class="form-control" name="section_name" id="section_name" type="text">
+                                                        <input class="form-control" name="product_name" id="product_name" type="text">
                                                     </div>
+                                                    <label class="my-1 mr-2" for="inlineFormCustomSelectPref">القسم</label>
+                                                    <select name="section_name" id="section_name" class="custom-select my-1 mr-sm-2" required>
+                                                        @foreach ($sections as $section)
+                                                            <option >{{ $section->section_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                     <div class="form-group">
                                                         <label for="message-text" class="col-form-label">ملاحظات:</label>
                                                         <textarea class="form-control" id="description" name="description"></textarea>
@@ -172,13 +179,13 @@
                                                 <button aria-label="Close" class="close" data-dismiss="modal"
                                                         type="button"><span aria-hidden="true">&times;</span></button>
                                             </div>
-                                            <form action="{{ route('sections.destroy',$x) }}" method="post">
+                                            <form action="{{ route('products.destroy',$product) }}" method="post">
                                                 {{ method_field('delete') }}
                                                 {{ csrf_field() }}
                                                 <div class="modal-body">
                                                     <p>هل انت متاكد من عملية الحذف ؟</p><br>
-                                                    <input type="hidden" name="id" id="id" value="">
-                                                    <input class="form-control" name="section_name" id="section_name" type="text" readonly>
+                                                    <input type="hidden" name="id" id="pro_id" value="">
+                                                    <input class="form-control" name="product_name" id="product_name" type="text" readonly>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
@@ -281,19 +288,19 @@
     <script>
         $('#edit_Product').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
-            var Product_name = button.data('name')
+            var Product_name = button.data('product_name')
             var section_name = button.data('section_name')
-            var pro_id = button.data('pro_id')
+            var pro_id = button.data('id')
             var description = button.data('description')
             var modal = $(this)
-            modal.find('.modal-body #Product_name').val(Product_name);
+            modal.find('.modal-body #product_name').val(Product_name);
             modal.find('.modal-body #section_name').val(section_name);
             modal.find('.modal-body #description').val(description);
             modal.find('.modal-body #pro_id').val(pro_id);
         })
         $('#modaldemo9').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
-            var pro_id = button.data('pro_id')
+            var pro_id = button.data('id')
             var product_name = button.data('product_name')
             var modal = $(this)
             modal.find('.modal-body #pro_id').val(pro_id);
