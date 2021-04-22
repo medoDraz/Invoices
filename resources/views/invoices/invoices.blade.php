@@ -61,7 +61,7 @@
         </script>
     @endif
     <!-- row -->
-    <div class="row row-sm">
+    <div class="row">
 
         <div class="col-xl-12">
             <div class="card mg-b-20">
@@ -78,40 +78,52 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="example1" class="table key-buttons text-md-nowrap">
+                        <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='50'style="text-align: center">
                             <thead>
                             <tr>
-                                <th class="border-bottom-0">#</th>
-                                <th class="border-bottom-0">رقم الفاتورة</th>
-                                <th class="border-bottom-0">تاريخ الفاتورة</th>
-                                <th class="border-bottom-0">تاريخ الإستحقاق</th>
-                                <th class="border-bottom-0">المنتج</th>
-                                <th class="border-bottom-0">القسم</th>
-                                <th class="border-bottom-0">تاريخ الإستحقاق</th>
-                                <th class="border-bottom-0">الخصم</th>
-                                <th class="border-bottom-0">نسبة الضريبة</th>
-                                <th class="border-bottom-0">قيمة الضريبة</th>
-                                <th class="border-bottom-0">الإجمالى</th>
-                                <th class="border-bottom-0">الحالة</th>
-                                <th class="border-bottom-0">ملاحظات</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;width: 30px;">#</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;width: 95px;">رقم الفاتورة</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;width: 110px;">تاريخ الفاتورة</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;width: 115px;">تاريخ الإستحقاق</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;">المنتج</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;">القسم</th>
+                                <!-- <th class="border-bottom-0">تاريخ الإستحقاق</th> -->
+                                <th class="border-bottom-0" style="padding-right: 0px;">الخصم</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;width: 100px;">نسبة الضريبة</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;width: 100px;">قيمة الضريبة</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;">الإجمالى</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;">الحالة</th>
+                                <th class="border-bottom-0" style="padding-right: 0px;">ملاحظات</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td>Tiger Nixon</td>
-                                <td>System Architect</td>
-                                <td>Edinburgh</td>
-                                <td>61</td>
-                                <td>2011/04/25</td>
-                                <td>$320,800</td>
-                                <td>$320,800</td>
-                            </tr>
+                            @foreach ($invoices as $index => $invoice)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $invoice->invoice_number}}</td>
+                                    <td>{{ $invoice->invoice_Date}}</td>
+                                    <td>{{ $invoice->Due_date}}</td>
+                                    <td>{{ $invoice->product}}</td>
+                                    <td>
+                                        <a href="{{ url('InvoicesDetails') }}/{{ $invoice->id }}">{{ $invoice->section->section_name }}</a>
+                                    </td>
+                                    <!-- <td>{{ $invoice->invoice_number}}</td> -->
+                                    <td>{{ $invoice->Discount}}</td>
+                                    <td>{{ $invoice->Rate_VAT}}</td>
+                                    <td>{{ $invoice->Value_VAT}}</td>
+                                    <td>{{ $invoice->Total}}</td>
+                                    <td>
+                                        @if ($invoice->Value_Status == 1)
+                                            <span class="text-success">{{ $invoice->Status }}</span>
+                                        @elseif($invoice->Value_Status == 2)
+                                            <span class="text-danger">{{ $invoice->Status }}</span>
+                                        @else
+                                            <span class="text-warning">{{ $invoice->Status }}</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $invoice->note}}</td>
+                                </tr>
+                            @endforeach
 
                             </tbody>
                         </table>

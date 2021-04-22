@@ -4,6 +4,9 @@
 <link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
 <!-- Maps css -->
 <link href="{{URL::asset('assets/plugins/jqvmap/jqvmap.min.css')}}" rel="stylesheet">
+@section('title')
+    لوحة التحكم
+@stop
 @endsection
 @section('page-header')
                 <!-- breadcrumb -->

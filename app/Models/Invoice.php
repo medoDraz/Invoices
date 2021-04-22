@@ -32,6 +32,6 @@ class Invoice extends Model
 
  public function section()
    {
-   return $this->belongsTo('App\Models\sections');
+   return $this->belongsTo('App\Models\Section');
    }
 }
