@@ -18,7 +18,7 @@
 @section('title')
     المنتجات
 @stop
-
+<!-- fgdsgd -->
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
